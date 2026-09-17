@@ -1,0 +1,45 @@
+---
+import { socialLinks } from '../data/site';
+---
+
+<section class="section" id="contacto" aria-labelledby="contacto-titulo">
+  <div class="container">
+    <p class="eyebrow" data-reveal>06 — Contact</p>
+
+    <h2 class="contact__title" id="contacto-titulo" data-reveal data-words style="--d:100ms">
+      <span class="line">
+        <span class="w" style="--i:0">let's</span>
+      </span>
+      <span class="line">
+        <span class="w" style="--i:1">build</span>
+        <span class="w" style="--i:2">something</span>
+        <span class="w contact__title-dot" style="--i:3">.</span>
+      </span>
+    </h2>
+
+    <p class="contact__lead" data-reveal style="--d:180ms">
+      Proyectos, dudas o colaboración: mi bandeja está abierta.
+    </p>
+
+    <nav class="contact__links" aria-label="Medios de contacto">
+      {
+        socialLinks.map((link, i) => (
+          <a
+            class="contact__link"
+            href={link.href}
+            data-reveal
+            style={`--d:${240 + i * 80}ms`}
+            target={link.href.startsWith('http') ? '_blank' : undefined}
+            rel={link.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+          >
+            <span class="contact__link-num" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span class="contact__link-label">{link.label}</span>
+            <span class="contact__link-arrow" aria-hidden="true">↗</span>
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</section>

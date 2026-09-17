@@ -1,0 +1,104 @@
+---
+import { site, navLinks } from '../data/site';
+---
+
+<header class="nav" data-nav>
+  <nav class="nav__bar" aria-label="Navegación principal">
+    <a class="nav__brand" href="#inicio" aria-label={`Volver al inicio — ${site.name}`}>
+      <span class="nav__brand-mark" aria-hidden="true"></span>
+      <span class="nav__brand-name">{site.name}</span>
+    </a>
+
+    <ul class="nav__links">
+      {
+        navLinks.map((link) => (
+          <li>
+            <a href={link.href}>{link.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <button
+      class="nav__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="nav-menu"
+      aria-label="Abrir menú"
+      data-nav-toggle
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <span class="nav__progress" data-nav-progress aria-hidden="true"></span>
+  </nav>
+
+  <nav class="nav__menu" id="nav-menu" aria-hidden="true" aria-label="Navegación móvil">
+    {
+      navLinks.map((link) => (
+        <a href={link.href} data-nav-link>
+          {link.label}
+        </a>
+      ))
+    }
+  </nav>
+</header>
+
+<script>
+  const toggle = document.querySelector('[data-nav-toggle]');
+  const menu = document.querySelector('#nav-menu');
+  const nav = document.querySelector('[data-nav]');
+  const progress = document.querySelector('[data-nav-progress]');
+
+  if (toggle && menu) {
+    const setState = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      menu.setAttribute('aria-hidden', String(!open));
+      toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    };
+
+    const close = () => {
+      setState(false);
+      toggle.focus();
+    };
+
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      setState(!open);
+    });
+
+    menu.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      if (target.closest('[data-nav-link]')) close();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        close();
+      }
+    });
+  }
+
+  if (nav && progress) {
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    const onScroll = () => {
+      const scrolled = window.scrollY > 24;
+      nav.classList.toggle('nav--scrolled', scrolled);
+
+      if (!reduceMotion) {
+        const doc = document.documentElement;
+        const max = doc.scrollHeight - window.innerHeight;
+        const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+        progress.style.transform = `scaleX(${p})`;
+      }
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+</script>

@@ -1,0 +1,82 @@
+---
+import { featuredProject, upcomingProjects } from '../data/projects';
+---
+
+<section class="section section--parchment" id="proyectos" aria-labelledby="proyectos-titulo">
+  <div class="container">
+  <div class="section__head">
+    <p class="eyebrow" data-reveal>04 — Portafolio</p>
+    <h2
+      class="section-title"
+      id="proyectos-titulo"
+      data-reveal
+      data-words
+      style="--d:100ms"
+    >
+      <span class="line">
+        <span class="w" style="--i:0">Obras</span>
+      </span>
+      <span class="line">
+        <span class="w text-gold" style="--i:1">reales.</span>
+      </span>
+    </h2>
+  </div>
+
+    <article class="work" data-reveal style="--d:140ms" aria-labelledby="novum-titulo">
+      <header class="work__bar">
+        <span class="work__num" aria-hidden="true">{featuredProject.index}</span>
+        <span class="work__status">{featuredProject.status}</span>
+      </header>
+
+      <div class="work__body">
+        <div class="work__content">
+          <h3 class="work__title" id="novum-titulo">{featuredProject.title}</h3>
+
+          <p class="work__desc">{featuredProject.description}</p>
+
+          <ul class="work__tags" aria-label="Áreas del proyecto">
+            {featuredProject.tags.map((tag) => <li>{tag}</li>)}
+          </ul>
+
+          <a
+            class="btn btn--dark work__cta"
+            href={featuredProject.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {featuredProject.urlLabel}
+            <span class="btn__arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <div class="work__visual" aria-hidden="true">
+          <svg viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="30" y="22" width="260" height="136" stroke="currentColor" stroke-width="1.4"></rect>
+            <line x1="30" y1="46" x2="290" y2="46" stroke="currentColor" stroke-width="1.4"></line>
+            <rect x="46" y="60" width="80" height="84" stroke="currentColor" stroke-width="1"></rect>
+            <path d="M144 70h126" stroke="currentColor" stroke-width="1"></path>
+            <path d="M144 88h96" stroke="currentColor" stroke-width="1"></path>
+            <path d="M144 106h112" stroke="currentColor" stroke-width="1"></path>
+            <path d="M144 124h72" stroke="currentColor" stroke-width="1"></path>
+            <path d="M130 60l10-14 10 14" stroke="currentColor" stroke-width="1.4"></path>
+            <path
+              d="M150 58l10-14 10 14"
+              stroke="currentColor"
+              class="gold"
+              stroke-width="1.4"></path>
+          </svg>
+        </div>
+      </div>
+    </article>
+
+    <section class="upcoming" data-reveal style="--d:220ms" aria-labelledby="proximos-titulo">
+      <div class="upcoming__head">
+        <p class="eyebrow">Próximos</p>
+        <h3 class="upcoming__title" id="proximos-titulo">{upcomingProjects.title}</h3>
+        <p class="upcoming__text">{upcomingProjects.text}</p>
+      </div>
+
+      <p class="upcoming__soon">{upcomingProjects.label}</p>
+    </section>
+  </div>
+</section>

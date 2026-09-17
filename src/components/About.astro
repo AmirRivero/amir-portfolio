@@ -1,0 +1,42 @@
+---
+// Sobre mí — frase principal como protagonista, con acento clay.
+const titleWords: { line: number; word: string; i: number }[] = [
+  { line: 0, word: 'pienso', i: 0 },
+  { line: 0, word: 'en', i: 1 },
+  { line: 0, word: 'sistemas.', i: 2 },
+  { line: 1, word: 'construyo', i: 3 },
+  { line: 1, word: 'soluciones.', i: 4 },
+];
+---
+
+<section class="section" id="sobre-mi" aria-labelledby="sobre-mi-titulo">
+  <div class="container">
+    <p class="eyebrow" data-reveal>01 — About</p>
+
+    <h2
+      class="about__title"
+      id="sobre-mi-titulo"
+      data-reveal
+      data-words
+      style="--d:100ms"
+    >
+      {[0, 1].map((line) => (
+        <span class={`line${line === 1 ? ' about__accent' : ''}`}>
+          {titleWords
+            .filter((w) => w.line === line)
+            .map((w) => (
+              <span class="w" style={`--i:${w.i}`}>{w.word}&nbsp;</span>
+            ))}
+        </span>
+      ))}
+    </h2>
+
+    <div class="about__meta">
+      <p class="about__role" data-reveal style="--d:220ms">Ingeniero de Sistemas</p>
+    </div>
+
+    <p class="about__signature" data-reveal style="--d:380ms">
+      construir hoy. liderar mañana.
+    </p>
+  </div>
+</section>

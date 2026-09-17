@@ -1,0 +1,128 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import { site, personSchema } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = site.title, description = site.description } = Astro.props;
+
+const canonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : undefined;
+
+const siteUrl = Astro.site ? new URL('/', Astro.site).href : undefined;
+
+const ogImage = Astro.site ? new URL(site.ogImage, Astro.site).href : site.ogImage;
+
+const ld = {
+  '@context': 'https://schema.org',
+  ...personSchema,
+  ...(siteUrl ? { url: siteUrl } : {}),
+};
+---
+
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.author} />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+    />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content={site.themeColor} />
+    <meta name="color-scheme" content="light" />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    {
+      Astro.site && (
+        <link
+          rel="sitemap"
+          type="application/xml"
+          href={new URL('sitemap-index.xml', Astro.site).href}
+        />
+      )
+    }
+
+    <!-- Fuente principal (subset latino) — recurso crítico del LCP -->
+    <link
+      rel="preload"
+      href="/fonts/manrope-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:site_name" content={site.author} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={site.ogImageAlt} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="es_ES" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={site.ogImageAlt} />
+
+    <!-- Datos estructurados -->
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(ld)}></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <Navbar />
+
+    <main id="contenido">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <script>
+      const items = document.querySelectorAll('[data-reveal]');
+
+      const reduceMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches;
+
+      if (!reduceMotion && 'IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -8% 0px' }
+        );
+
+        for (const item of items) observer.observe(item);
+      } else {
+        for (const item of items) item.classList.add('is-visible');
+      }
+    </script>
+  </body>
+</html>

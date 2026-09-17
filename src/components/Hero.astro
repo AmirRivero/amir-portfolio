@@ -1,0 +1,213 @@
+---
+// Composición abstracta de datos: red de nodos, conexiones, un grafo,
+// un cilindro de base de datos, barras de métrica y marca de código.
+// Coordenadas deterministas (sin aleatoriedad en el build).
+type Pt = [number, number];
+
+const pts: Pt[] = [
+  [70, 150],
+  [150, 95],
+  [250, 120],
+  [180, 205],
+  [300, 170],
+  [380, 135],
+  [330, 240],
+  [430, 190],
+  [470, 270],
+  [540, 220],
+  [220, 300],
+  [120, 255],
+  [290, 360],
+  [180, 400],
+  [360, 330],
+  [460, 340],
+  [520, 150],
+];
+
+const edges: [Pt, Pt][] = [];
+for (let i = 0; i < pts.length; i++) {
+  for (let j = i + 1; j < pts.length; j++) {
+    const [x1, y1] = pts[i];
+    const [x2, y2] = pts[j];
+    const d = (x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2);
+    if (d < 115 * 115) edges.push([pts[i], pts[j]]);
+  }
+}
+
+// Nodos destacados que actúan como "anillos de base de datos"
+const goldNodes = [pts[2], pts[6], pts[12], pts[14]];
+const ringNodes = [pts[2], pts[6], pts[12]];
+
+// Barras de métrica (pequeño dashboard)
+const bars = [
+  { x: 96, h: 34 },
+  { x: 122, h: 52 },
+  { x: 148, h: 42 },
+  { x: 174, h: 66 },
+  { x: 200, h: 30 },
+];
+const goldBars = [1, 3];
+
+// Línea de tendencia (spline de puntos)
+const trend = [
+  [92, 452],
+  [126, 428],
+  [160, 436],
+  [194, 402],
+  [228, 414],
+];
+const letters = ['A', 'M', 'I', 'R'];
+---
+
+<section class="hero" id="inicio" aria-label="Presentación">
+  <div class="hero__art" aria-hidden="true">
+    <svg
+      class="hero__graph"
+      viewBox="0 0 620 480"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <!-- conexiones -->
+      {edges.map(([a, b]) => (
+        <line
+          x1={a[0]}
+          y1={a[1]}
+          x2={b[0]}
+          y2={b[1]}
+          stroke="currentColor"
+          stroke-width="0.8"
+          opacity="0.55"
+        />
+      ))}
+
+      <!-- nodos -->
+      {pts.map(([x, y]) => (
+        <circle
+          class="art-node"
+          cx={x}
+          cy={y}
+          r="2.4"
+          fill="currentColor"
+          opacity="0.8"
+        />
+      ))}
+
+      <!-- nodos dorados -->
+      {goldNodes.map(([x, y]) => (
+        <circle class="art-gold" cx={x} cy={y} r="3" fill="currentColor" />
+      ))}
+      <!-- anillos -->
+      {ringNodes.map(([x, y]) => (
+        <circle
+          class="art-node--slow"
+          cx={x}
+          cy={y}
+          r="13"
+          stroke="currentColor"
+          stroke-width="1"
+          opacity="0.7"
+        />
+      ))}
+
+      <!-- cilindro de base de datos -->
+      <g transform="translate(470 300)" opacity="0.85">
+        <ellipse cx="0" cy="0" rx="40" ry="13" stroke="currentColor" stroke-width="1.1" fill="none" />
+        <line x1="-40" y1="0" x2="-40" y2="58" stroke="currentColor" stroke-width="1.1" />
+        <line x1="40" y1="0" x2="40" y2="58" stroke="currentColor" stroke-width="1.1" />
+        <ellipse cx="40" cy="0" rx="13" ry="3.6" fill="currentColor" opacity="0.7" />
+        <ellipse cx="0" cy="58" rx="40" ry="13" stroke="currentColor" stroke-width="1.1" fill="none" />
+      </g>
+
+      <!-- tablas (grid de celdas) -->
+      <g transform="translate(250 382)" opacity="0.7">
+        {[0, 1, 2, 3].map((col) =>
+          [0, 1, 2].map((row) => (
+            <rect
+              key={`${col}-${row}`}
+              x={col * 22}
+              y={row * 13}
+              width="15"
+              height="8"
+              stroke="currentColor"
+              stroke-width="0.7"
+              fill="none"
+            />
+          ))
+        )}
+      </g>
+
+      <!-- barras de métrica -->
+      <g transform="translate(0 44)" opacity="0.9">
+        {bars.map((b, i) => (
+          <rect
+            key={i}
+            class={goldBars.includes(i) ? 'art-gold' : undefined}
+            x={b.x}
+            y={-b.h}
+            width="14"
+            height={b.h}
+            stroke="currentColor"
+            stroke-width="1"
+            fill="none"
+          />
+        ))}
+      </g>
+
+      <!-- línea de tendencia -->
+      <g opacity="0.8">
+        <path
+          d={`M ${trend.map((p) => p.join(' ')).join(' L ')}`}
+          stroke="currentColor"
+          stroke-width="1.1"
+        />
+        {trend.map(([x, y], i) => (
+          <circle
+            key={i}
+            class={i === 3 ? 'art-gold' : undefined}
+            cx={x}
+            cy={y}
+            r="2.6"
+            fill="currentColor"
+          />
+        ))}
+      </g>
+    </svg>
+
+    <span class="hero__chip hero__chip--1">SQL</span>
+    <span class="hero__chip hero__chip--2">Power BI</span>
+    <span class="hero__chip hero__chip--3">Python</span>
+  </div>
+
+  <div class="container hero__inner">
+    <p class="eyebrow hero__eyebrow" data-hero style="--i:0">
+      Portfolio — Data systems <span class="eyebrow__accent">&amp;</span> technology
+    </p>
+
+    <h1 class="hero__title" data-hero style="--i:1">
+      <span class="u-visually-hidden">Amir Rivero — Ingeniero de Sistemas. </span>
+      {letters.map((c, i) => (
+        <span class="hero-letter" style={`--i:${i + 1}`} aria-hidden="true">{c}</span>
+      ))}
+      <span class="hero-title__dot" aria-hidden="true">.</span>
+    </h1>
+
+    <p class="hero__subtitle" data-hero style="--i:2">
+      <span class="hero-w" style="--i:0">DATA</span><span class="hero-w" style="--i:1">&nbsp;/&nbsp;</span><span class="hero-w" style="--i:2">SYSTEMS</span><br />
+      <span class="hero-w gold-amp" style="--i:3" aria-hidden="true">&amp;</span><span class="hero-w" style="--i:4">&nbsp;TECHNOLOGY</span>
+    </p>
+
+    <p class="hero__desc" data-hero style="--i:3">
+      Ingeniero de Sistemas construyendo soluciones con SQL, Power BI, Python y
+      automatización.
+    </p>
+
+    <div class="hero__actions" data-hero style="--i:4">
+      <a class="btn btn--dark" href="#proyectos">
+        Ver proyectos <span class="btn__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="btn btn--ghost" href="#sobre-mi">
+        Sobre mí
+      </a>
+    </div>
+  </div>
+</section>

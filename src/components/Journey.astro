@@ -1,0 +1,34 @@
+---
+import { journeySteps } from '../data/journey';
+---
+
+<section class="section" id="camino" aria-labelledby="camino-titulo">
+  <div class="container">
+    <div class="section__head journey__head">
+      <p class="eyebrow" data-reveal>03 — Journey</p>
+      <h2 class="section-title" id="camino-titulo" data-reveal data-words style="--d:100ms">
+        <span class="line">
+          <span class="w" style="--i:0">sistemas</span>
+          <span class="w text-gold" style="--i:1">→</span>
+          <span class="w" style="--i:2">estrategia</span>
+        </span>
+      </h2>
+      <p class="journey__subtitle" data-reveal style="--d:180ms">
+        datos · tecnología · negocio
+      </p>
+    </div>
+
+    <ol class="journey-flow">
+      {
+        journeySteps.map((step, i) => (
+          <li class="journey-step" data-reveal style={`--d:${i * 80}ms`}>
+            <span class="journey-step__num" aria-hidden="true">{step.num}</span>
+            <h3 class="journey-step__title">{step.title}</h3>
+            <p class="journey-step__tech">{step.tech}</p>
+            <span class="journey-step__arrow" aria-hidden="true">→</span>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

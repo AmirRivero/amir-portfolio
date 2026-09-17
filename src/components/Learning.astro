@@ -1,0 +1,42 @@
+---
+import { learningTopics } from '../data/learning';
+---
+
+<section class="section section--night" id="aprendiendo" aria-labelledby="aprendiendo-titulo">
+  <div class="container">
+    <div class="learning__head">
+      <p class="eyebrow" data-reveal>
+        05 — <span class="eyebrow__accent">Currently learning</span>
+      </p>
+      <h2
+        class="section-title"
+        id="aprendiendo-titulo"
+        data-reveal
+        data-words
+        style="--d:100ms"
+      >
+        <span class="line">
+          <span class="w" style="--i:0">aprendiendo</span>
+        </span>
+        <span class="line">
+          <span class="w text-gold" style="--i:1">en</span>
+          <span class="w" style="--i:2">vivo.</span>
+        </span>
+      </h2>
+    </div>
+
+    <ol class="learning-grid">
+      {
+        learningTopics.map((topic, i) => (
+          <li class="learning-item" data-reveal style={`--d:${i * 70}ms`}>
+            <span class="learning-item__dot" aria-hidden="true"></span>
+            <span class="learning-item__num" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 class="learning-item__title">{topic}</h3>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

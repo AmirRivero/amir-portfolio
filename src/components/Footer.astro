@@ -1,0 +1,27 @@
+---
+import { site, footerTagline, navLinks } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <a class="footer__brand" href="#inicio" aria-label={`Volver al inicio — ${site.name}`}>
+        {site.name}<span class="gold">.</span>
+      </a>
+
+      <nav class="footer__nav" aria-label="Navegación de pie">
+        {
+          navLinks.map((link) => (
+            <a href={link.href}>{link.label}</a>
+          ))
+        }
+      </nav>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__tagline">{footerTagline}</p>
+      <p>© {year} {site.author}</p>
+    </div>
+  </div>
+</footer>

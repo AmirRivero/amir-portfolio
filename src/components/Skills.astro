@@ -1,0 +1,113 @@
+---
+import { skillCategories } from '../data/skills';
+---
+
+<section class="section section--dark" id="conocimientos" aria-labelledby="conocimientos-titulo">
+  <div class="container">
+    <div class="section__head">
+      <p class="eyebrow" data-reveal>
+        02 — <span class="eyebrow__accent">Knowledge</span>
+      </p>
+      <h2 class="section-title" id="conocimientos-titulo" data-reveal data-words style="--d:100ms">
+        <span class="line">
+          <span class="w" style="--i:0">Sistemas</span>
+        </span>
+        <span class="line">
+          <span class="w text-gold" style="--i:1">clave.</span>
+        </span>
+      </h2>
+    </div>
+
+    <div class="skills-grid">
+      {
+        skillCategories.map((cat, i) => (
+          <article class="skill-card" data-reveal style={`--d:${i * 90}ms`}>
+            <header class="skill-card__head">
+              <span class="skill-card__num" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+
+              {cat.glyph === 'database' && (
+                <svg class="skill-card__glyph" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                  <ellipse cx="16" cy="9" rx="10" ry="4" stroke="currentColor" stroke-width="1.5" />
+                  <path
+                    d="M6 9v14c0 2.2 4.5 4 10 4s10-1.8 10-4V9"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <path
+                    d="M6 16c0 2.2 4.5 4 10 4s10-1.8 10-4"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                </svg>
+              )}
+
+              {cat.glyph === 'analytics' && (
+                <svg class="skill-card__glyph" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                  <path d="M5 26V16" stroke="currentColor" stroke-width="1.5" />
+                  <path d="M13 26V7" stroke="currentColor" stroke-width="1.5" />
+                  <path d="M21 26v-12" stroke="currentColor" stroke-width="1.5" />
+                  <path d="M29 26V12" stroke="currentColor" stroke-width="1.5" />
+                  <path d="M3 27h28" stroke="currentColor" stroke-width="1.5" />
+                </svg>
+              )}
+
+              {cat.glyph === 'automation' && (
+                <svg class="skill-card__glyph" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                  <path
+                    d="M20.49 8A9 9 0 0 0 5.64 4.64L9 8"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <path
+                    d="M2 15v-5h5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M11.51 24A9 9 0 0 0 26.36 27.36L23 24"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <path
+                    d="M30 17v5h-5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              )}
+
+              {cat.glyph === 'development' && (
+                <svg class="skill-card__glyph" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                  <path
+                    d="M11 9L4 16l7 7"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M21 9l7 7-7 7"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path d="M18 5l-4 22" stroke="currentColor" stroke-width="1.5" />
+                </svg>
+              )}
+            </header>
+
+            <h3 class="skill-card__title">{cat.title}</h3>
+            <p class="skill-card__tag">{cat.tagline}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
